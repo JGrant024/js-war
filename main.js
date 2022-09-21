@@ -43,7 +43,7 @@ Game.prototype.deal = function(){
         return !(index % 2)
 
         this.play2.hand = this.deck.cards.filter(function(item,index) {
-            return index % 2
+            return index %  2
         })
     })
 }
