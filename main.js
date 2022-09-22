@@ -1,5 +1,6 @@
+// gloobal declatration 
 const suits = ["♥", "♦", "♠", "♣"];
-const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A",];
+const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A",]; 
 
 // const playerName = prompt("Enter your name"); 
 // document.querySelector(".player1-name").innerHTML = playerName; 
@@ -27,14 +28,14 @@ function Deck() {
 function Player({name} = {}) {
     this.name = name; 
 }
-
+// created players 
 function Game() {
     this.player1 = new Player({name: 'Player 1'})
     this.player2 = new Player({name: 'Player 2'})
     this.deck = new Deck(); 
 }
 
-
+// created shuffel method 
 Game.prototype.shuffle = function () {
     // target the deck with this.deck
     let i = this.deck.cards.length;
@@ -54,6 +55,7 @@ Game.prototype.deal = function() {
 
     document.getElementById("start").disabled = true;
     this.shuffle();
+    //Follow up on this - using modulo 
     this.player1.hand = this.deck.cards.filter(function(item, index){
         return !(index % 2);
 
@@ -77,13 +79,17 @@ Game.prototype.compare = function() {
     document.querySelector(".player-2-suit").innerHTML = this.player2.hand[0].suit;
     document.querySelector(".player-2-value").innerHTML = this.player2.hand[0].value;
 
+    
+    //Find index of player's card in the values array
     const playerOneCard = values.indexOf(this.player1.hand[0].value); 
     const playerTwoCard = values.indexOf(this.player2.hand[0].value); 
 
     if (playerOneCard > playerTwoCard) {
         document.querySelector(".winner").innerHTML = "Player 1 wins";
+        //Remove first card from player's deck
         const winningCard = this.player1.hand.shift();
         const losingCard = this.player2.hand.shift();   
+        //Push losing and winning cards to the end of the player's deck
         this.player1.hand.push(winningCard); 
         this.player1.hand.push(losingCard);   
     }
@@ -97,18 +103,16 @@ Game.prototype.compare = function() {
     if (playerOneCard === playerTwoCard) {
         const player1WarCards = this.player1.hand.splice(0,4); 
         const player2WarCards = this.player2.hand.splice(0,4); 
+         //Find index of player's card in the values array
         const warCard1 = values.indexOf(player1WarCards[3].value);
         const warCard2 = values.indexOf(player2WarCards[3].value);
 
         if (warCard1 > warCard2) {
-            console.log("player 1 won")
-            console.log(player1WarCards)
+            //Merge the two arrays (war cards to player's deck)
             this.player1.hand = this.player1.hand.concat(player1WarCards);
             this.player1.hand = this.player1.hand.concat(player2WarCards);
         }
         if (warCard2 > warCard1){
-            console.log("player 2 won")
-            console.log(player2WarCards); 
             this.player2.hand = this.player2.hand.concat(player1WarCards);
             this.player2.hand = this.player2.hand.concat(player2WarCards);
         }
