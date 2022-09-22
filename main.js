@@ -1,8 +1,8 @@
 const suits = ["♥", "♦", "♠", "♣"];
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A",];
 
-const playerName = prompt("Enter your name"); 
-document.querySelector(".player1-name").innerHTML = playerName; 
+// const playerName = prompt("Enter your name"); 
+// document.querySelector(".player1-name").innerHTML = playerName; 
 
 let player1SuitUI = document.querySelector(".player-1-suit").innerHTML; 
 let player1ValueUI = document.querySelector(".player-1-value").innerHTML; 
@@ -95,7 +95,25 @@ Game.prototype.compare = function() {
         this.player2.hand.push(losingCard);
     }
     if (playerOneCard === playerTwoCard) {
-        document.querySelector(".winner").innerHTML = "Issa Tie"
+        const player1WarCards = this.player1.hand.splice(0,4); 
+        const player2WarCards = this.player2.hand.splice(0,4); 
+        const warCard1 = values.indexOf(player1WarCards[3].value);
+        const warCard2 = values.indexOf(player2WarCards[3].value);
+
+        if (warCard1 > warCard2) {
+            console.log("player 1 won")
+            console.log(player1WarCards)
+            this.player1.hand = this.player1.hand.concat(player1WarCards);
+            this.player1.hand = this.player1.hand.concat(player2WarCards);
+        }
+        if (warCard2 > warCard1){
+            console.log("player 2 won")
+            console.log(player2WarCards); 
+            this.player2.hand = this.player2.hand.concat(player1WarCards);
+            this.player2.hand = this.player2.hand.concat(player2WarCards);
+        }
+        
+        document.querySelector(".winner").innerHTML = "Issa Tie";
     }
 
     document.querySelector(".deck1").innerHTML = `Deck: ${this.player1.hand.length}`;
